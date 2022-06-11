@@ -6,6 +6,9 @@ import pickle
 
 from prefect import flow, get_run_logger, task
 from prefect.task_runners import SequentialTaskRunner
+from prefect.deployments import DeploymentSpec
+from prefect.flow_runners import SubprocessFlowRunner
+from prefect.orion.schemas.schedules import CronSchedule
 
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.linear_model import LinearRegression
@@ -123,14 +126,12 @@ def main(date=None):
 #main()
 main(date="2021-03-15")
 
-from prefect.deployments import DeploymentSpec
-from prefect.flow_runners import SubprocessFlowRunner
-from prefect.orion.schemas.schedules import CronSchedule
 
-#DeploymentSpec(
-#    name="model_training_prefect",
-#    flow_location="C:/Users/Deva/Documents/GitHub/mlops_zoomcamp/homework.py",
-#    schedule=CronSchedule(cron="0 9 15 * *"),
-#    flow_runner=SubprocessFlowRunner(),
-#    tags=["prefect_hw3"]
-#)
+# preferct deployment
+DeploymentSpec(
+    name="model_training_prefect",
+    flow_location="/home/deva/mlops_zoomcamp/week3_homework_solution.py",
+    schedule=CronSchedule(cron="0 9 15 * *"),
+    flow_runner=SubprocessFlowRunner(),
+    tags=["prefect_hw3"]
+)
